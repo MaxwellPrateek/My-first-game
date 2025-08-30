@@ -1,0 +1,51 @@
+import pygame
+import random
+pygame.init()
+WIDTH, HEIGHT = 700, 700
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Catch the ball!")
+BLACK = (0 , 0 , 0)
+RED = (123 ,123, 140)
+BLUE = (0, 100, 255)
+WHITE = (255,255,255)
+font = pygame.font.SysFont(None , 40)
+player = pygame.Rect(150, 550, 100, 20)
+player_speed = 6
+ball = pygame.Rect(random.randint(0, WIDTH-30), 30, 30, 30)
+ball_speed = 4
+score = 0
+running = True
+clock = pygame.time.Clock()
+while running:
+    screen.fill(BLACK)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT] and player.left > 0:
+        player.x -= player_speed
+    if keys[pygame.K_RIGHT] and player.right < WIDTH:
+        player.x += player_speed
+    ball.y += ball_speed
+    if ball.y > HEIGHT:
+        ball.y = 0
+        ball.x = random.randint(0, WIDTH - 30)
+    if player.colliderect(ball):
+        score +=1
+        ball.y = 0
+        ball.x = random.randint(0, WIDTH - 30)
+    '''if ball.y > HEIGHT:
+        score -=1
+        ball.y = 0
+        ball.x = random.randint(0, WIDTH - 30)'''
+    
+
+    pygame.draw.rect(screen, RED, player)
+    pygame.draw.ellipse(screen, RED, ball)
+    score_text = font.render(f"Score: {score}" , True, WHITE)
+    screen.blit(score_text, (10, 10))
+    pygame.display.update()
+    clock.tick(60)
+pygame.quit()
+#this is the code since idk how to really put it
